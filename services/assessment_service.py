@@ -1,8 +1,12 @@
+
 from config import SUPABASE_URL, SUPABASE_KEY
 from supabase import create_client
 
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+supabase = create_client(
+    SUPABASE_URL,
+    SUPABASE_KEY
+)
 
 
 def start_assessment(candidate_id):
@@ -25,13 +29,24 @@ def start_assessment(candidate_id):
         .execute()
     )
 
+    if not response.data:
+        raise Exception("Failed to create assessment.")
+
     return response.data[0]
+
 
 def update_stage_score(
     assessment_id,
     stage,
     score
 ):
+
+    # Validate score
+    if not isinstance(score, (int, float)):
+        raise ValueError("Score must be a number.")
+
+    if score < 0 or score > 100:
+        raise ValueError("Score must be between 0 and 100.")
 
     response = (
         supabase
@@ -43,6 +58,9 @@ def update_stage_score(
         .execute()
     )
 
+    if not response.data:
+        raise Exception("Assessment not found.")
+
     return response.data[0]
 
 
@@ -51,6 +69,7 @@ def finalize_assessment(
     total_time
 ):
 
+    # Get the three stage scores
     response = (
         supabase
         .table("assessments")
@@ -62,28 +81,39 @@ def finalize_assessment(
         .execute()
     )
 
+    if not response.data:
+        raise Exception("Assessment not found.")
+
     assessment = response.data
 
     aptitude = assessment["aptitude_score"]
     memory = assessment["memory_score"]
     cipher = assessment["cipher_score"]
 
-    total_score = aptitude + memory + cipher
+    # Calculate normalized score out of 100
+    total_score = (
+        aptitude +
+        memory +
+        cipher
+    ) / 3
 
-    average_score = total_score / 3
+    # Round to 2 decimal places
+    total_score = round(total_score, 2)
 
-    if average_score >= 90:
+    # Classification
+    if total_score >= 90:
         classification = "ELITE"
 
-    elif average_score >= 75:
+    elif total_score >= 75:
         classification = "STRONG"
 
-    elif average_score >= 60:
+    elif total_score >= 60:
         classification = "PROMISING"
 
     else:
         classification = "NEEDS REVIEW"
 
+    # Save final assessment
     updated = (
         supabase
         .table("assessments")
@@ -96,4 +126,8 @@ def finalize_assessment(
         .execute()
     )
 
+    if not updated.data:
+        raise Exception("Failed to finalize assessment.")
+
     return updated.data[0]
+

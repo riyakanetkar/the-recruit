@@ -1,7 +1,4 @@
-from flask import Flask
-
-
-
+from flask import Flask, render_template
 
 from routes.candidate_routes import candidate_bp
 from routes.memory_routes import memory_bp
@@ -18,14 +15,9 @@ app.register_blueprint(cipher_bp)
 app.register_blueprint(assessment_bp)
 
 
-
-
-
-
-
 @app.route("/")
 def home():
-    return "The Recruit is running!"
+    return render_template("index.html")
 
 
 if __name__ == "__main__":

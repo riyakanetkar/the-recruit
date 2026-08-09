@@ -1,3 +1,4 @@
+
 from flask import Blueprint, jsonify, request
 
 from controllers.assessment_controller import (
@@ -87,12 +88,28 @@ def stage_score():
             "message": "Invalid stage."
         }), 400
 
+    score = data["score"]
+
+    if not isinstance(score, (int, float)):
+
+        return jsonify({
+            "success": False,
+            "message": "Score must be a number."
+        }), 400
+
+    if score < 0 or score > 100:
+
+        return jsonify({
+            "success": False,
+            "message": "Score must be between 0 and 100."
+        }), 400
+
     try:
 
         assessment = save_stage_score(
             data["assessment_id"],
             data["stage"],
-            data["score"]
+            score
         )
 
         return jsonify({
@@ -123,22 +140,40 @@ def finalize():
         }), 400
 
     if "assessment_id" not in data:
+
         return jsonify({
             "success": False,
             "message": "assessment_id is required."
         }), 400
 
     if "total_time" not in data:
+
         return jsonify({
             "success": False,
             "message": "total_time is required."
+        }), 400
+
+    total_time = data["total_time"]
+
+    if not isinstance(total_time, (int, float)):
+
+        return jsonify({
+            "success": False,
+            "message": "total_time must be a number."
+        }), 400
+
+    if total_time < 0:
+
+        return jsonify({
+            "success": False,
+            "message": "total_time cannot be negative."
         }), 400
 
     try:
 
         assessment = complete_assessment(
             data["assessment_id"],
-            data["total_time"]
+            total_time
         )
 
         return jsonify({
@@ -152,3 +187,4 @@ def finalize():
             "success": False,
             "message": str(error)
         }), 500
+
