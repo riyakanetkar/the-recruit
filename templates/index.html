@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>THE RECRUIT - Assessment Protocol</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Tailwind configuration belongs HERE, not in app.js -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed-variant": "#484554",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#530dc6",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#312f3d",
+                        "secondary": "#bdf4ff",
+                        "surface-container": "#1f1f25",
+                        "secondary-fixed": "#9cf0ff",
+                        "on-secondary": "#00363d",
+                        "on-secondary-container": "#00616d",
+                        "tertiary-container": "#938ea0",
+                        "inverse-primary": "#6c38de",
+                        "primary-container": "#9e79ff",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-background": "#e4e1e9",
+                        "on-primary-fixed": "#22005d",
+                        "on-primary-container": "#320081",
+                        "on-secondary-fixed": "#001f24",
+                        "surface-container-high": "#2a292f",
+                        "primary-fixed-dim": "#cfbdff",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "tertiary-fixed": "#e5e0f3",
+                        "outline-variant": "#494455",
+                        "surface-container-lowest": "#0e0e13",
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#1b1b21",
+                        "tertiary-fixed-dim": "#c9c4d6",
+                        "surface-bright": "#39383f",
+                        "secondary-fixed-dim": "#00daf3",
+                        "inverse-surface": "#e4e1e9",
+                        "on-primary": "#3a0093",
+                        "surface-variant": "#35343a",
+                        "on-surface": "#e4e1e9",
+                        "on-tertiary-fixed": "#1c1a27",
+                        "primary": "#cfbdff",
+                        "on-tertiary-container": "#2a2836",
+                        "inverse-on-surface": "#303036",
+                        "background": "#131318",
+                        "tertiary": "#c9c4d6",
+                        "on-error": "#690005",
+                        "surface-tint": "#cfbdff",
+                        "primary-fixed": "#e9ddff",
+                        "secondary-container": "#00e3fd",
+                        "surface": "#131318",
+                        "surface-container-highest": "#35343a",
+                        "surface-dim": "#131318",
+                        "outline": "#948ea1"
+                    },
+
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+
+                    spacing: {
+                        gutter: "24px",
+                        "margin-desktop": "64px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        unit: "4px"
+                    },
+
+                    fontFamily: {
+                        "code-sm": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "data-label": ["JetBrains Mono"],
+                        "body-main": ["Space Grotesk"]
+                    },
+
+                    fontSize: {
+                        "code-sm": [
+                            "11px",
+                            {
+                                lineHeight: "1.4",
+                                fontWeight: "400"
+                            }
+                        ],
+
+                        "display-lg-mobile": [
+                            "32px",
+                            {
+                                lineHeight: "1.2",
+                                fontWeight: "700"
+                            }
+                        ],
+
+                        "display-lg": [
+                            "48px",
+                            {
+                                lineHeight: "1.1",
+                                letterSpacing: "-0.02em",
+                                fontWeight: "700"
+                            }
+                        ],
+
+                        "headline-md": [
+                            "24px",
+                            {
+                                lineHeight: "1.3",
+                                fontWeight: "600"
+                            }
+                        ],
+
+                        "data-label": [
+                            "12px",
+                            {
+                                lineHeight: "1.0",
+                                letterSpacing: "0.1em",
+                                fontWeight: "500"
+                            }
+                        ],
+
+                        "body-main": [
+                            "16px",
+                            {
+                                lineHeight: "1.6",
+                                fontWeight: "400"
+                            }
+                        ]
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- Your existing CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style/style.css') }}">
+
+    <!-- Three.js MUST load before app.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+
+    <!-- Your JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet"/>
+</head>
+
+<body class="font-body-main antialiased relative min-h-screen flex flex-col overflow-x-hidden selection:bg-inverse-primary selection:text-white">
+
+<!-- Ambient Background -->
+<div class="fixed inset-0 pointer-events-none z-[-1] grid-bg"></div>
+<div class="fixed inset-0 pointer-events-none z-[-1] fine-lines opacity-50"></div>
+<div class="fixed inset-0 pointer-events-none z-[-1] scan-lines opacity-20"></div>
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1] ambient-glow"></div>
+
+<!-- Decorative Corner Anchors -->
+<div class="fixed top-4 left-4 w-4 h-4 border-t border-l border-outline-variant/50 pointer-events-none z-50"></div>
+<div class="fixed top-4 right-4 w-4 h-4 border-t border-r border-outline-variant/50 pointer-events-none z-50"></div>
+<div class="fixed bottom-4 left-4 w-4 h-4 border-b border-l border-outline-variant/50 pointer-events-none z-50"></div>
+<div class="fixed bottom-4 right-4 w-4 h-4 border-b border-r border-outline-variant/50 pointer-events-none z-50"></div>
+
+<!-- Top Navigation -->
+<header class="w-full top-0 sticky z-40 bg-background/90 backdrop-blur-md border-b border-outline-variant/20">
+
+    <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-container-max mx-auto hidden md:flex">
+
+        <div class="flex items-center gap-6">
+
+            <a class="font-display-lg text-[24px] tracking-tighter text-primary dark:text-primary uppercase flex items-center gap-3"
+               href="#">
+                <span class="material-symbols-outlined text-primary">terminal</span>
+                THE RECRUIT
+            </a>
+
+            <div class="flex items-center gap-2 font-code-sm text-code-sm text-on-surface-variant border border-outline-variant/30 px-3 py-1 bg-[#12101D]">
+                <span class="w-2 h-2 rounded-full bg-[#00daf3] shadow-[0_0_8px_#00daf3] animate-pulse"></span>
+                SYSTEM ONLINE
+            </div>
+
+        </div>
+
+        <div class="flex items-center gap-6">
+
+            <a class="font-code-sm text-code-sm uppercase text-secondary-fixed-dim border border-secondary-fixed-dim/30 px-4 py-2 hover:bg-secondary-fixed-dim/10 transition-colors flex items-center gap-2 group clip-corner"
+               href="#">
+                ASSESSMENT PROTOCOL // 2026 ACCESS
+                <span class="material-symbols-outlined text-[14px] group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                </span>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="flex justify-between items-center px-margin-mobile py-4 w-full md:hidden">
+
+        <a class="font-display-lg-mobile text-[20px] tracking-tighter text-primary uppercase"
+           href="#">
+            THE RECRUIT
+        </a>
+
+        <button class="text-primary">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+    </div>
+
+</header>
+
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center relative w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-24">
+
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter relative z-10">
+
+        <!-- Left Column -->
+        <div class="lg:col-span-6 flex flex-col justify-center space-y-8 relative">
+
+            <div class="absolute -left-12 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-outline-variant/30 to-transparent hidden lg:block"></div>
+
+            <div class="absolute -left-14 top-1/2 -translate-y-1/2 font-code-sm text-[10px] text-outline-variant rotate-[-90deg] tracking-widest hidden lg:block uppercase">
+                SYS.SEC.COORD // 45.912.88
+            </div>
+
+            <div class="space-y-4">
+
+                <div class="font-code-sm text-code-sm text-secondary-fixed-dim uppercase tracking-widest flex items-center gap-3">
+                    <span class="w-8 h-px bg-secondary-fixed-dim/50"></span>
+                    RECRUITMENT SYSTEM // NODE 07
+                </div>
+
+                <h1 class="font-display-lg text-display-lg text-on-surface uppercase tracking-tighter text-glow-cyan">
+                    THE RECRUIT
+                </h1>
+
+                <h2 class="font-headline-md text-headline-md text-primary uppercase tracking-wide">
+                    Your next challenge has arrived.
+                </h2>
+
+                <p class="font-body-main text-body-main text-on-surface-variant max-w-lg leading-relaxed mt-4 border-l border-outline-variant/30 pl-4 py-1">
+                    Complete a series of adaptive challenges designed to evaluate analytical thinking, memory, problem-solving, and decision-making within high-stress simulated environments.
+                </p>
+
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
+
+                <button id="initialize-assessment"
+                        class="font-data-label text-data-label uppercase tracking-widest bg-inverse-primary text-white px-8 py-4 glow-border-violet hover:bg-[#7e4aff] transition-all active:scale-95 flex items-center gap-3 clip-corner relative overflow-hidden group">
+
+                    <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+
+                    INITIALIZE ASSESSMENT
+
+                    <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+                        arrow_forward
+                    </span>
+
+                </button>
+
+                <div class="font-code-sm text-code-sm text-outline flex items-center gap-2 bracket bg-[#12101D] border border-outline-variant/20 px-3 py-2">
+                    ACCESS LEVEL:
+                    <span class="text-on-surface">CANDIDATE</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Column: Three.js -->
+        <div class="lg:col-span-6 relative mt-12 lg:mt-0 min-h-[500px] flex items-center justify-center">
+
+            <!-- Crosshair Accents -->
+            <div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-secondary-fixed-dim/50 z-20"></div>
+            <div class="absolute top-0 right-0 w-8 h-8 border-t border-r border-secondary-fixed-dim/50 z-20"></div>
+            <div class="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-secondary-fixed-dim/50 z-20"></div>
+            <div class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-secondary-fixed-dim/50 z-20"></div>
+
+            <!-- 3D Scene Container -->
+            <div class="absolute inset-0 w-full h-full z-10 p-4">
+
+                <div class="w-full h-full relative border border-outline-variant/10 bg-[#12101D]/50 backdrop-blur-sm overflow-hidden clip-corner-reverse">
+
+                    <!-- Scanning Line Overlay -->
+                    <div class="absolute inset-0 w-full h-[2px] bg-secondary-fixed-dim/50 shadow-[0_0_10px_#00daf3] opacity-50 z-20 scan-line"></div>
+
+                    <!-- THREE.JS CONTAINER -->
+                    <div class="absolute inset-0 w-full h-full z-10"
+                         id="threejs-container-ANIMATION_2"></div>
+
+                    <!-- Internal Coordinates -->
+                    <div class="absolute bottom-2 right-2 font-code-sm text-[9px] text-outline-variant/60 z-20">
+                        X: 114.2 Y: -88.4 Z: 0.00
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Floating Data Panel -->
+            <div class="absolute -left-8 lg:-left-16 bottom-8 z-30 w-64 bg-[#12101D]/90 backdrop-blur-md border border-[#8B5CFF]/30 p-5 shadow-2xl clip-corner">
+
+                <div class="flex justify-between items-center mb-4 border-b border-outline-variant/20 pb-2">
+
+                    <h3 class="font-data-label text-data-label text-primary uppercase tracking-widest">
+                        CANDIDATE PROTOCOL
+                    </h3>
+
+                    <span class="font-code-sm text-[9px] text-outline-variant">
+                        REF_00293
+                    </span>
+
+                </div>
+
+                <div class="space-y-3 font-code-sm text-code-sm">
+
+                    <div class="flex justify-between items-center group">
+                        <span class="text-on-surface-variant group-hover:text-on-surface transition-colors">
+                            STAGES
+                        </span>
+                        <span class="text-on-surface bracket">03</span>
+                    </div>
+
+                    <div class="flex justify-between items-center group">
+                        <span class="text-on-surface-variant group-hover:text-on-surface transition-colors">
+                            CHALLENGES
+                        </span>
+                        <span class="text-on-surface bracket">09</span>
+                    </div>
+
+                    <div class="flex justify-between items-center group">
+                        <span class="text-on-surface-variant group-hover:text-on-surface transition-colors">
+                            EST. TIME
+                        </span>
+                        <span class="text-on-surface">10 MIN</span>
+                    </div>
+
+                    <div class="pt-3 mt-3 border-t border-outline-variant/20 flex justify-between items-center">
+
+                        <span class="text-outline-variant">
+                            STATUS
+                        </span>
+
+                        <span class="text-secondary-fixed-dim font-bold blinking-cursor">
+                            [+] READY
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-8 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/10 z-40 relative mt-auto">
+
+    <div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-4 w-full max-w-container-max mx-auto">
+
+        <div class="font-display-lg text-[20px] text-primary uppercase tracking-tighter flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px]">terminal</span>
+            THE RECRUIT
+        </div>
+
+        <div class="font-code-sm text-code-sm uppercase text-on-surface-variant tracking-widest text-center">
+            ASSESSMENT PROTOCOL // 2026
+        </div>
+
+        <div class="flex items-center gap-2 font-code-sm text-code-sm uppercase text-tertiary dark:text-tertiary md:text-right">
+            <span class="w-2 h-2 rounded-full bg-[#00daf3] shadow-[0_0_8px_#00daf3] animate-pulse"></span>
+            SYSTEM ONLINE
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- Candidate Initialization Modal -->
+<div id="candidateModal" class="candidate-modal hidden">
+
+    <div class="candidate-modal-box">
+
+        <div class="candidate-modal-header">
+
+            <span class="font-data-label text-data-label text-secondary-fixed-dim">
+                CANDIDATE INITIALIZATION
+            </span>
+
+            <button id="closeModalBtn" type="button">×</button>
+
+        </div>
+
+        <div class="candidate-modal-content">
+
+            <p class="font-code-sm text-code-sm text-outline-variant">
+                IDENTITY VERIFICATION // REQUIRED
+            </p>
+
+            <h2 class="font-headline-md text-headline-md text-primary">
+                ENTER YOUR NAME
+            </h2>
+
+            <input id="candidateName"
+                   type="text"
+                   placeholder="ENTER NAME..."
+                   autocomplete="off">
+
+            <p id="candidateError" class="candidate-error hidden"></p>
+
+            <button id="beginAssessmentBtn" type="button">
+                BEGIN ASSESSMENT
+                <span>→</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

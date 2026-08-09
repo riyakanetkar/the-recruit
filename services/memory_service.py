@@ -15,7 +15,7 @@ def generate_memory_sequence():
     Each cell is represented by its row and column.
     """
 
-    number_of_cells = random.randint(6, 8)
+    number_of_cells = random.randint(4, 4)
 
     all_cells = [
         {"row": row, "col": col}

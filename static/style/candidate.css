@@ -1,0 +1,19 @@
+/* Custom Utilities */
+        .scan-line {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+        }
+
+        .clip-corners {
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+
+        .border-glow-neon {
+            border: 1px solid theme('colors.secondary-container');
+            box-shadow: 0 0 10px theme('colors.secondary-container');
+        }
+
+        .border-glow-violet {
+            border: 1px solid theme('colors.primary-container');
+            box-shadow: 0 0 10px theme('colors.primary-container');
+        }

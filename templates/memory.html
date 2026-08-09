@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>The Recruit - Memory Assessment</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@600;700&family=Space+Grotesk:wght@400;500&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+    >
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class"
+        };
+    </script>
+
+    <!-- YOUR CSS -->
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style/memory.css') }}"
+    >
+</head>
+
+
+<body class="min-h-screen text-white">
+
+    <!-- Scanline Overlay -->
+    <div class="scanlines fixed inset-0 z-50"></div>
+
+
+    <!-- Header -->
+    <header
+        class="border-b border-cyan-400/20 bg-black/40 backdrop-blur-md px-6 py-4 flex justify-between items-center"
+    >
+
+        <div>
+            <h1
+                class="font-['Sora'] text-xl md:text-2xl tracking-widest text-cyan-300"
+            >
+                THE RECRUIT
+            </h1>
+
+            <p
+                class="font-['JetBrains_Mono'] text-xs text-cyan-400/60 mt-1"
+            >
+                NODE 07 // MEMORY ASSESSMENT
+            </p>
+        </div>
+
+
+        <!-- Timer -->
+        <div class="text-right">
+
+            <p
+                class="font-['JetBrains_Mono'] text-[10px] text-cyan-400/50 tracking-widest"
+            >
+                TIME REMAINING
+            </p>
+
+            <div
+                id="timer"
+                class="font-['JetBrains_Mono'] text-2xl text-cyan-400"
+            >
+                01:45
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- Main -->
+    <main
+        class="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 py-10"
+    >
+
+        <section
+            class="glass-panel w-full max-w-3xl border border-cyan-400/20 p-6 md:p-10 relative"
+        >
+
+            <!-- Corner Brackets -->
+            <div class="absolute w-4 h-4 corner-bracket-tl"></div>
+            <div class="absolute w-4 h-4 corner-bracket-tr"></div>
+            <div class="absolute w-4 h-4 corner-bracket-bl"></div>
+            <div class="absolute w-4 h-4 corner-bracket-br"></div>
+
+
+            <!-- Status -->
+            <div class="text-center mb-8">
+
+                <div
+                    class="flex justify-center items-center gap-3 mb-3"
+                >
+
+                    <span
+                        id="status-indicator"
+                        class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"
+                    ></span>
+
+                    <h2
+                        id="status-text"
+                        class="font-['Sora'] text-xl md:text-2xl tracking-widest text-cyan-300"
+                    >
+                        MEMORIZE SEQUENCE
+                    </h2>
+
+                </div>
+
+
+                <p
+                    id="instruction-text"
+                    class="font-['Space_Grotesk'] text-sm text-gray-400"
+                >
+                    Watch the sequence carefully, then reproduce it.
+                </p>
+
+            </div>
+
+
+            <!-- Sequence Counter -->
+            <div
+                class="flex justify-center mb-6"
+            >
+
+                <div
+                    class="border border-cyan-400/20 px-5 py-2 font-['JetBrains_Mono'] text-sm text-cyan-300"
+                >
+
+                    SEQUENCE
+
+                    <span class="mx-2 text-cyan-400/30">
+                        //
+                    </span>
+
+                    <span id="sequence-counter">
+                        0 / 4
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Memory Grid -->
+            <div
+                id="memory-grid"
+                class="grid grid-cols-4 gap-2 md:gap-3 max-w-xl mx-auto"
+            >
+            </div>
+
+
+            <!-- Submit -->
+            <div class="flex justify-center mt-10">
+
+                <button
+                    id="memory-submit"
+                    type="button"
+                    disabled
+                    class="px-8 py-4 border border-cyan-400 bg-cyan-400/10 text-cyan-300 font-['JetBrains_Mono'] tracking-widest transition-all duration-300 hover:bg-cyan-400/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+
+                    CONFIRM SEQUENCE
+
+                    <span class="material-symbols-outlined text-sm align-middle ml-2">
+                        arrow_forward
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- YOUR JS -->
+    <script src="{{ url_for('static', filename='js/memory.js') }}"></script>
+
+</body>
+
+</html>
+

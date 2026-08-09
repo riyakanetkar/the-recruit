@@ -19,6 +19,26 @@ app.register_blueprint(assessment_bp)
 def home():
     return render_template("index.html")
 
+# =========================================================
+# APTITUDE PAGE
+# =========================================================
+
+@app.route("/aptitude")
+def aptitude_page():
+    return render_template("aptitude.html")
+
+# =========================================================
+# CIPHER PAGE
+# =========================================================
+
+@app.route("/cipher")
+def cipher_page():
+    return render_template("cipher.html")
+
+@app.route("/memory")
+def memory_page():
+    return render_template("memory.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

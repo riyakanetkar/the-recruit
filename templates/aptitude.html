@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>THE RECRUIT - Aptitude Assessment</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=swap" rel="stylesheet">
+
+    <!-- Tailwind configuration belongs HERE, NOT in aptitude.js -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+
+            theme: {
+                extend: {
+
+                    colors: {
+                        "primary": "#9e79ff",
+                        "primary-container": "#9e79ff",
+                        "primary-fixed-dim": "#cfbdff",
+
+                        "secondary": "#9cefff",
+                        "secondary-container": "#01daf3",
+                        "secondary-fixed": "#9cefff",
+                        "secondary-fixed-dim": "#01daf3",
+
+                        "error": "#ffb4ab",
+
+                        "surface": "#131318",
+                        "surface-dim": "#131318",
+                        "surface-bright": "#39383f",
+
+                        "surface-container-lowest": "#0e0e13",
+                        "surface-container-low": "#1b1b21",
+                        "surface-container-high": "#2a292f",
+                        "surface-container-highest": "#35343a",
+
+                        "on-surface": "#e4e1e9",
+                        "on-surface-variant": "#cbc3d7",
+
+                        "outline": "#948ea1",
+                        "outline-variant": "#494455"
+                    },
+
+                    spacing: {
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "panel-padding": "32px",
+                        "gutter": "24px"
+                    },
+
+                    fontFamily: {
+                        "label-caps": ["JetBrains Mono"],
+                        "headline": ["Sora"],
+                        "body-main": ["Space Grotesk"],
+                        "data-mono": ["JetBrains Mono"],
+                        "ui-button": ["Space Grotesk"]
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- Aptitude-specific CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style/aptitude.css') }}">
+</head>
+
+
+<body class="font-body-main text-on-surface antialiased min-h-screen flex flex-col">
+
+<!-- Scanline overlay -->
+<div class="scan-lines"></div>
+
+<!-- Background dots -->
+<div class="dot-grid"></div>
+
+
+<!-- =========================================================
+     DESKTOP HEADER
+========================================================= -->
+
+<header
+    class="hidden md:flex justify-between items-center w-full px-margin-desktop py-4 max-w-[1440px] mx-auto bg-surface/80 border-b border-secondary/20 backdrop-blur-xl sticky top-0 z-50">
+
+    <div class="font-headline text-3xl font-bold tracking-tighter text-primary">
+        THE RECRUIT
+    </div>
+
+    <nav class="flex gap-8">
+
+        <a href="#"
+           class="font-label-caps text-xs text-on-surface-variant hover:text-secondary transition-colors">
+            HOME
+        </a>
+
+        <a href="#"
+           class="font-label-caps text-xs text-on-surface-variant hover:text-secondary transition-colors">
+            CANDIDATE
+        </a>
+
+        <a href="#"
+           class="font-label-caps text-xs text-on-surface-variant hover:text-secondary transition-colors">
+            MEMORY
+        </a>
+
+        <a href="#"
+           class="font-label-caps text-xs text-primary font-bold">
+            APTITUDE
+        </a>
+
+        <a href="#"
+           class="font-label-caps text-xs text-on-surface-variant hover:text-secondary transition-colors">
+            CIPHER
+        </a>
+
+        <a href="#"
+           class="font-label-caps text-xs text-on-surface-variant hover:text-secondary transition-colors">
+            RESULTS
+        </a>
+
+    </nav>
+
+
+    <div class="flex gap-4">
+
+        <span class="material-symbols-outlined text-secondary">
+            sensors
+        </span>
+
+        <span class="material-symbols-outlined text-secondary">
+            memory
+        </span>
+
+        <span class="material-symbols-outlined text-secondary">
+            terminal
+        </span>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     MOBILE NAV
+========================================================= -->
+
+<nav
+    class="md:hidden fixed bottom-0 left-0 w-full bg-surface/90 border-t border-secondary/20 backdrop-blur-xl z-50 flex justify-around items-center py-4">
+
+    <span class="material-symbols-outlined text-on-surface-variant">
+        home
+    </span>
+
+    <span class="material-symbols-outlined text-on-surface-variant">
+        account_circle
+    </span>
+
+    <span class="material-symbols-outlined text-primary">
+        query_stats
+    </span>
+
+    <span class="material-symbols-outlined text-on-surface-variant">
+        lock_open
+    </span>
+
+</nav>
+
+
+<!-- =========================================================
+     CANDIDATE / TIMER HUD
+========================================================= -->
+
+<div class="fixed top-24 right-12 hidden lg:block z-40 text-right">
+
+    <div
+        id="candidate-id-display"
+        class="font-data-mono text-xs text-secondary opacity-70">
+        CANDIDATE_ID: --
+    </div>
+
+    <div
+        class="font-data-mono text-xs text-secondary opacity-70 mt-1">
+        NODE: 07
+    </div>
+
+    <div
+        id="aptitude-timer"
+        class="font-data-mono text-xl text-primary mt-4">
+        T-MINUS: 05:00
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN ASSESSMENT PANEL
+========================================================= -->
+
+<main
+    class="flex-grow flex flex-col items-center justify-center p-4 md:p-12 mb-20 md:mb-0 relative z-10">
+
+    <div
+        class="w-full max-w-4xl glass-panel p-8 md:p-12 relative mt-8 md:mt-0">
+
+        <!-- HUD corners -->
+
+        <div class="hud-bracket tl"></div>
+        <div class="hud-bracket tr"></div>
+        <div class="hud-bracket bl"></div>
+        <div class="hud-bracket br"></div>
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header
+            class="mb-12 border-b border-secondary/20 pb-6 flex justify-between items-end">
+
+            <div>
+
+                <h1
+                    class="font-headline text-2xl md:text-3xl font-semibold text-primary tracking-wide">
+                    APTITUDE ASSESSMENT
+                </h1>
+
+                <p
+                    class="font-data-mono text-xs text-secondary/70 mt-2">
+                    MODULE 4 // LOGICAL REASONING
+                </p>
+
+            </div>
+
+
+            <div class="hidden sm:block">
+
+                <span
+                    class="material-symbols-outlined text-4xl text-primary opacity-50">
+                    query_stats
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             PROGRESS
+        ================================================== -->
+
+        <div
+            id="aptitude-progress"
+            class="flex gap-2 mb-10"
+            aria-label="Assessment progress">
+
+            <!-- JavaScript creates the progress indicators -->
+
+        </div>
+
+
+        <!-- =================================================
+             QUESTION
+        ================================================== -->
+
+        <section
+            id="aptitude-question"
+            class="mb-12">
+
+            <p
+                id="question-text"
+                class="font-data-mono text-sm text-on-surface-variant leading-relaxed mb-6">
+                INITIALIZING APTITUDE MODULE...
+            </p>
+
+
+            <!-- Optional question data block -->
+
+            <div
+                id="question-data"
+                class="bg-surface-container-highest/50 p-6 border border-secondary/10 font-data-mono text-sm text-secondary/90 hidden">
+
+                <code id="question-data-text"></code>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             OPTIONS
+        ================================================== -->
+
+        <div
+            id="aptitude-options"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+
+            <!-- JavaScript creates A/B/C/D options -->
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+        ================================================== -->
+
+        <p
+            id="aptitude-error"
+            class="text-error font-data-mono text-xs mb-6 hidden"
+            role="alert">
+        </p>
+
+
+        <!-- =================================================
+             ACTION BUTTON
+        ================================================== -->
+
+        <div
+            class="flex justify-end border-t border-secondary/20 pt-8 mt-auto">
+
+            <button
+                id="aptitude-submit"
+                type="button"
+                class="btn-primary font-ui-button px-8 py-4 flex items-center gap-2 group">
+
+                <span id="aptitude-submit-text">
+                    NEXT CHALLENGE
+                </span>
+
+                <span
+                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer
+    class="fixed bottom-0 right-0 p-4 hidden lg:flex gap-6 items-center z-40">
+
+    <a
+        href="#"
+        class="font-label-caps text-xs text-outline hover:text-secondary">
+        PROTOCOLS
+    </a>
+
+    <a
+        href="#"
+        class="font-label-caps text-xs text-outline hover:text-secondary">
+        PRIVACY
+    </a>
+
+    <a
+        href="#"
+        class="font-label-caps text-xs text-outline hover:text-secondary">
+        SIGNAL SUPPORT
+    </a>
+
+    <span
+        class="font-label-caps text-xs text-outline ml-4">
+        © 2124 SYSTEM ARCHIVE [CLASSIFIED]
+    </span>
+
+</footer>
+
+
+<!-- =========================================================
+     APTITUDE JAVASCRIPT
+========================================================= -->
+
+<script src="{{ url_for('static', filename='js/aptitude.js') }}"></script>
+
+</body>
+</html>
